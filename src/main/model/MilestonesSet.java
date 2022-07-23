@@ -18,4 +18,13 @@ public class MilestonesSet {
         milestones.add(milestone);
     }
 
+    //EFFECTS: returns length of milestones
+    public int length() {
+        return milestones.size();
+    }
+
+    public LinkedList<String> milestoneDisplay() {
+        return null;
+    }
+
 }
