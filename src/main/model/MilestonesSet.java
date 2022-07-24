@@ -18,13 +18,33 @@ public class MilestonesSet {
         milestones.add(milestone);
     }
 
-    //EFFECTS: returns length of milestones
+    // EFFECTS: returns length of milestones
     public int length() {
         return milestones.size();
     }
 
-    public LinkedList<String> milestoneDisplay() {
-        return null;
+    // EFFECTS: returns milestone at the specified index
+    public Milestone getMilestoneAtIndex(int index) {
+        return milestones.get(index);
+    }
+
+    // EFFECTS: displays all the milestones set so far
+    public LinkedList<String> milestonesSetDisplay() {
+        LinkedList<String> milestoneLog = new LinkedList<>();
+        for (Milestone m: milestones) {
+            milestoneLog.add(m.getMilestoneAndStatus());
+        }
+        return milestoneLog;
+    }
+
+    // MODIFIES: MilestonesSet
+    // EFFECTS: updates the status of each milestone according to the amount of cookies acquired
+    public void updateMilestonesStatuses(int cookieCount) {
+        for (Milestone m: this.milestones) {
+            if (cookieCount >= m.getMilestoneAmount()) {
+                m.setReached();
+            }
+        }
     }
 
 }

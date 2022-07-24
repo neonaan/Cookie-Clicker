@@ -30,5 +30,17 @@ public class Milestone {
         status = true;
     }
 
+    // EFFECTS: Returns status as a string, either "reached" or "unreached"
+    public String getStatus() {
+        if (status) {
+            return "reached";
+        } else {
+            return "unreached";
+        }
+    }
 
+    // EFFECTS: returns milestone in format: "acquire cookieMilestone: status"
+    public String getMilestoneAndStatus() {
+        return ("acquire " + Integer.toString(cookieMilestone) + " cookies: " + getStatus());
+    }
 }
