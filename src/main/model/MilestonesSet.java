@@ -19,13 +19,17 @@ public class MilestonesSet {
     }
 
     // EFFECTS: returns length of milestones
-    public int length() {
+    public int getLength() {
         return milestones.size();
     }
 
-    // EFFECTS: returns milestone at the specified index
-    public Milestone getMilestoneAtIndex(int index) {
-        return milestones.get(index);
+    //EFFECTS: returns true if the milestone is in the set
+    public boolean contains(Milestone m) {
+        if (milestones.contains(m)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // EFFECTS: displays all the milestones set so far

@@ -18,11 +18,12 @@ program using the things that I will learn in this course.
 *User Stories*:
 - As a user, I want to be able to increase the amount of
 cookies I have by pressing a certain key on the 
-keyboard.
+keyboard. (This will later change when gui is implemneted
+later on)
 - As a user, I want to be able to see a counter
 that keeps track of how many cookies I have.
 - As a user, I want to be able to add an arbitrary
-amount of milestones or goals for myself. The milestones will be in the form of reaching a certain
+amount of milestones for myself. The milestones will be in the form of reaching a certain
 amount of cookies. 
 - As a user, I want to be able to check if the milestones
 I have set have been reached.

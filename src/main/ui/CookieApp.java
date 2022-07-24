@@ -3,9 +3,7 @@ package ui;
 import model.Milestone;
 import model.MilestonesSet;
 
-import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.List;
 
 // Cookie Clicker game application
 public class CookieApp {
@@ -95,7 +93,7 @@ public class CookieApp {
 
     // EFFECTS: displays a list of all milestones set by the user
     public void showMilestonesSet() {
-        if (milestones.length() == 0) {
+        if (milestones.getLength() == 0) {
             System.out.println("You have no milestones set.");
         } else {
             milestones.updateMilestonesStatuses(cookieCount);

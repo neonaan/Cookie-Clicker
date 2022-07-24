@@ -7,10 +7,11 @@ public class Milestone {
     private boolean status;
 
 
+    // REQUIRES: target >= 0
     // EFFECTS: Constructs a milestone with a set amount of cookies to be reached.
     //          The milestone is given an unreached status when it is set.
-    public Milestone(int amount) {
-        cookieMilestone = amount;
+    public Milestone(int target) {
+        cookieMilestone = target;
         status = false;
     }
 
@@ -19,8 +20,8 @@ public class Milestone {
         return cookieMilestone;
     }
 
-    // EFFECTS: returns the status of the milestone.
-    public boolean isReached() {
+    // EFFECTS: returns the status of the milestone as a boolean.
+    public boolean getStatus() {
         return status;
     }
 
@@ -31,7 +32,7 @@ public class Milestone {
     }
 
     // EFFECTS: Returns status as a string, either "reached" or "unreached"
-    public String getStatus() {
+    public String getStringFormStatus() {
         if (status) {
             return "reached";
         } else {
@@ -41,6 +42,6 @@ public class Milestone {
 
     // EFFECTS: returns milestone in format: "acquire cookieMilestone: status"
     public String getMilestoneAndStatus() {
-        return ("acquire " + Integer.toString(cookieMilestone) + " cookies: " + getStatus());
+        return ("acquire " + Integer.toString(cookieMilestone) + " cookies: " + getStringFormStatus());
     }
 }
