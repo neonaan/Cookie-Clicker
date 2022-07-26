@@ -18,6 +18,7 @@ public class CookieApp {
         runCookie();
     }
 
+    // inspired by tellerApp
     // MODIFIES: this
     // EFFECTS: Processes user input
     public void runCookie() {
@@ -79,6 +80,7 @@ public class CookieApp {
         System.out.println("You now have " + Integer.toString(cookieCount) + " cookies!");
     }
 
+    // REQUIRES: input must be an integer >=0
     // MODIFIES: this, MilestonesSet
     // EFFECTS: Prompts user to create a milestone and adds it to the MilestoneSet
     public void setupMilestone() {
@@ -100,5 +102,4 @@ public class CookieApp {
             System.out.println(milestones.milestonesSetDisplay());
         }
     }
-
 }

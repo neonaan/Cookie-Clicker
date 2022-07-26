@@ -1,6 +1,6 @@
 # Cookie Clicker
 
-## Phase 0:
+## Phase 0/1:
 
 I want to make a **Cookie Clicker** game. This game
 involves clicking on a picture of a cookie to 
@@ -27,3 +27,11 @@ amount of milestones for myself. The milestones will be in the form of reaching 
 amount of cookies. 
 - As a user, I want to be able to check if the milestones
 I have set have been reached.
+
+## Phase 2:
+*User Stories*:
+- As a user, I want to be able to save the state of the game to file.
+- As a user, I want to be able to reload the saved state and resume playing
+the game where it left off.
+
+
