@@ -102,4 +102,5 @@ public class MilestonesSetTest {
         ms.updateMilestonesStatuses(counter);
         assertEquals(testList, ms.milestonesSetDisplay());
     }
+
 }

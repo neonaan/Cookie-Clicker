@@ -1,24 +1,39 @@
 package ui;
 
+import model.CookieCount;
 import model.Milestone;
 import model.MilestonesSet;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 // Cookie Clicker game application
 public class CookieApp {
+    private static final String JSON_STORE_MILESTONES = "./data/milestones.json";
+    private static final String JSON_STORE_COOKIES = "./data/cookies.json";
     private Scanner input;
-    private int cookieCount;
+    private CookieCount cookieCount;
     private MilestonesSet milestones;
+    private JsonWriter jsonMilestoneWriter;
+    private JsonReader jsonMilestoneReader;
+    private JsonWriter jsonCookieWriter;
+    private JsonReader jsonCookieReader;
 
     // EFFECTS: runs the Cookie Clicker game application. User starts with no cookies and no milestones.
     public CookieApp() {
-        cookieCount = 0;
+        cookieCount = new CookieCount();
         milestones = new MilestonesSet();
+        jsonMilestoneWriter = new JsonWriter(JSON_STORE_MILESTONES);
+        jsonMilestoneReader = new JsonReader(JSON_STORE_MILESTONES);
+        jsonCookieWriter = new JsonWriter(JSON_STORE_COOKIES);
+        jsonCookieReader = new JsonReader(JSON_STORE_COOKIES);
         runCookie();
     }
 
-    // inspired by tellerApp
+    // based off of tellerApp
     // MODIFIES: this
     // EFFECTS: Processes user input
     public void runCookie() {
@@ -38,7 +53,7 @@ public class CookieApp {
             }
         }
         System.out.println("\nThanks for playing! \nYou ended the game with "
-                + Integer.toString(cookieCount) + " cookies.");
+                + Integer.toString(cookieCount.getCookieCount()) + " cookies.");
     }
 
     // MODIFIES: this
@@ -50,6 +65,10 @@ public class CookieApp {
             setupMilestone();
         } else if (command.equals("v")) {
             showMilestonesSet();
+        } else if (command.equals("s")) {
+            saveGameState();
+        } else if (command.equals("l")) {
+            loadGameState();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -62,6 +81,8 @@ public class CookieApp {
         System.out.println("\tc -> acquire cookie");
         System.out.println("\tm -> set milestone");
         System.out.println("\tv -> view milestones");
+        System.out.println("\ts -> save game");
+        System.out.println("\tl -> load game");
         System.out.println("\te -> end game");
     }
 
@@ -76,8 +97,8 @@ public class CookieApp {
     // MODIFIES: this
     // EFFECTS: increases cookie count by 1
     public void increaseCookieCount() {
-        cookieCount++;
-        System.out.println("You now have " + Integer.toString(cookieCount) + " cookies!");
+        cookieCount.incrementCookies(1);
+        System.out.println("You now have " + Integer.toString(cookieCount.getCookieCount()) + " cookies!");
     }
 
     // REQUIRES: input must be an integer >=0
@@ -98,8 +119,37 @@ public class CookieApp {
         if (milestones.getLength() == 0) {
             System.out.println("You have no milestones set.");
         } else {
-            milestones.updateMilestonesStatuses(cookieCount);
-            System.out.println(milestones.milestonesSetDisplay());
+            milestones.updateMilestonesStatuses(cookieCount.getCookieCount());
+            for (int i = 0; i < milestones.getLength(); i++) {
+                System.out.println(milestones.milestonesSetDisplay().get(i));
+            }
+        }
+    }
+
+    // EFFECTS: saves MilestonesSet and cookieCount to file
+    private void saveGameState() {
+        try {
+            jsonMilestoneWriter.open();
+            jsonMilestoneWriter.writeMilestonesSet(milestones);
+            jsonMilestoneWriter.close();
+            jsonCookieWriter.open();
+            jsonCookieWriter.writeCookieCount(cookieCount);
+            jsonCookieWriter.close();
+            System.out.println("Saved milestones and total cookies");
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE_MILESTONES);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads MilestonesSet and cookieCount from file
+    private void loadGameState() {
+        try {
+            milestones = jsonMilestoneReader.readMilestonesSet();
+            cookieCount = jsonCookieReader.readCookies();
+            System.out.println("Loaded previous game state");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE_MILESTONES);
         }
     }
 }

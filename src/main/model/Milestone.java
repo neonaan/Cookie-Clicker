@@ -1,8 +1,11 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // Represents a milestone (a certain amount of cookies to be reached)
 // having a status ("reached" or "unreached")
-public class Milestone {
+public class Milestone implements Writable {
     private int cookieMilestone;
     private boolean status;
 
@@ -43,5 +46,13 @@ public class Milestone {
     // EFFECTS: returns milestone in format: "acquire cookieMilestone: status"
     public String getMilestoneAndStatus() {
         return ("acquire " + Integer.toString(cookieMilestone) + " cookies: " + getStringFormStatus());
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("goal", cookieMilestone);
+        json.put("status", status);
+        return json;
     }
 }

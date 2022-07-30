@@ -1,0 +1,10 @@
+{"milestones": [
+    {
+        "goal": 4,
+        "status": true
+    },
+    {
+        "goal": 7,
+        "status": false
+    }
+]}
