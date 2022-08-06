@@ -25,6 +25,8 @@ public class NewCookieApp implements ActionListener {
     private JLabel counterLabel;
     private JButton setMilestoneButton;
     private JButton viewMilestoneButton;
+    private JTextField setMilestoneTextField;
+    private JFrame setMilestoneFrame;
 
     public NewCookieApp() {
         cookieCount = new CookieCount();
@@ -49,7 +51,7 @@ public class NewCookieApp implements ActionListener {
     private JFrame makeWindow() {
         JFrame application = new JFrame();
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        application.getContentPane().setBackground(Color.black);
+        application.getContentPane().setBackground(Color.pink);
         application.setLayout(null);
         application.setSize(800,700);
         return application;
@@ -69,7 +71,7 @@ public class NewCookieApp implements ActionListener {
     public void makeCookieCounter(JFrame application) {
         JPanel counter = new JPanel();
         counter.setBounds(120, 100, 200, 100);
-        counter.setBackground(Color.black);
+        counter.setBackground(Color.pink);
         counter.setLayout(new GridLayout(1,1));
         application.add(counter);
 
@@ -118,6 +120,11 @@ public class NewCookieApp implements ActionListener {
 
             case "view milestones":
 
+            case "enter":
+                if (e.getSource() == setMilestoneTextField) {
+                    String amount = setMilestoneTextField.getText();
+                    addNewMilestone(amount);
+                }
         }
     }
 
@@ -126,23 +133,47 @@ public class NewCookieApp implements ActionListener {
     // EFFECTS: Prompts user to create a milestone and adds it to the MilestoneSet
     public void setupMilestone() {
 
-        JFrame application = new JFrame();
-        application.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        application.getContentPane().setBackground(Color.black);
-        application.setLayout(null);
-        application.setSize(500,500);
-        application.setLayout(new FlowLayout());
+        setMilestoneFrame = new JFrame();
+        setMilestoneFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setMilestoneFrame.getContentPane().setBackground(Color.black);
+        setMilestoneFrame.setLayout(null);
+        setMilestoneFrame.setSize(400,200);
+        setMilestoneFrame.setLayout(new FlowLayout());
+        setMilestoneFrame.setVisible(true);
 
-        JTextField field = new JTextField("Set the amount of cookies you wish to receive: ");
-        application.add(field);
+        JLabel entryText = new JLabel("Set the amount of cookies you wish to receive:");
+        entryText.setBounds(250, 10, 100, 20);
+        entryText.setBackground(Color.black);
+        entryText.setForeground(Color.white);
+        setMilestoneFrame.add(entryText);
 
+        setMilestoneTextField = new JTextField("", 5);
+        setMilestoneFrame.add(setMilestoneTextField);
+        setMilestoneTextField.setActionCommand("enter");
+        setMilestoneTextField.addActionListener(this);
 
-        String amount = null;
-        System.out.println("Set the amount of cookies you wish to receive: ");
-        amount = input.next();
-        int integerAmount = Integer.valueOf(amount);
-        Milestone milestone = new Milestone(integerAmount);
-        milestones.addMilestone(milestone);
-        System.out.println("Your new milestone has been set!");
+    }
+
+    public void addNewMilestone(String amount) {
+        try {
+            int integerAmount = Integer.valueOf(amount);
+            Milestone milestone = new Milestone(integerAmount);
+            milestones.addMilestone(milestone);
+            setMilestoneFrame.dispose();
+
+        } catch (NumberFormatException e) {
+            JFrame errorFrame = new JFrame();
+            errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            errorFrame.getContentPane().setBackground(Color.yellow);
+            errorFrame.setSize(400, 200);
+            errorFrame.setVisible(true);
+
+            JLabel entryText = new JLabel("oh no! Your milestone needs to be an integer.");
+            entryText.setHorizontalAlignment(JLabel.CENTER);
+            entryText.setBackground(Color.yellow);
+            entryText.setForeground(Color.black);
+            errorFrame.add(entryText);
+        }
+
     }
 }
