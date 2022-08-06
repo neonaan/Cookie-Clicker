@@ -10,12 +10,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class NewCookieApp implements ActionListener {
     private static final String JSON_STORE_MILESTONES = "./data/milestones.json";
     private static final String JSON_STORE_COOKIES = "./data/cookies.json";
-    private Scanner input;
     protected CookieCount cookieCount;
     private MilestonesSet milestones;
     private JsonWriter jsonMilestoneWriter;
@@ -25,8 +27,10 @@ public class NewCookieApp implements ActionListener {
     private JLabel counterLabel;
     private JButton setMilestoneButton;
     private JButton viewMilestoneButton;
+    private JButton cookieButton;
     private JTextField setMilestoneTextField;
     private JFrame setMilestoneFrame;
+    private JFrame application;
 
     public NewCookieApp() {
         cookieCount = new CookieCount();
@@ -49,20 +53,21 @@ public class NewCookieApp implements ActionListener {
     }
 
     private JFrame makeWindow() {
-        JFrame application = new JFrame();
-        application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        application = new JFrame();
+        application.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         application.getContentPane().setBackground(Color.pink);
         application.setLayout(null);
         application.setSize(800,700);
+        application.addWindowListener(new CloseWindowPopup(this));
+        new StartGamePopup(this);
         return application;
     }
 
     public void makeCookie(JFrame application) {
-        JButton cookieButton = new JButton();
+        cookieButton = new JButton();
         Color brown = new Color(150, 75, 0);
         cookieButton.setBackground(brown);
         cookieButton.setBounds(100, 200, 200, 200);
-        cookieButton.setActionCommand("click cookie");
         cookieButton.addActionListener(this);
         application.add(cookieButton);
 
@@ -93,13 +98,11 @@ public class NewCookieApp implements ActionListener {
 
         setMilestoneButton = new JButton("Set new milestone");
         setMilestoneButton.setFont(font);
-        setMilestoneButton.setActionCommand("set milestone");
         setMilestoneButton.addActionListener(this);
         milestoneButtons.add(setMilestoneButton);
 
         viewMilestoneButton = new JButton("View milestones");
         viewMilestoneButton.setFont(font);
-        viewMilestoneButton.setActionCommand("view milestones");
         viewMilestoneButton.addActionListener(this);
         milestoneButtons.add(viewMilestoneButton);
 
@@ -108,25 +111,21 @@ public class NewCookieApp implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        String action = e.getActionCommand();
+        Object action = e.getSource();
 
-        switch (action) {
-            case "click cookie":
-                cookieCount.incrementCookies(1);
-                counterLabel.setText(cookieCount.getCookieCount() + " cookies");
-                break;
-            case "set milestone":
-                setupMilestone();
-
-            case "view milestones":
-
-            case "enter":
-                if (e.getSource() == setMilestoneTextField) {
-                    String amount = setMilestoneTextField.getText();
-                    addNewMilestone(amount);
-                }
+        if (action == cookieButton) {
+            cookieCount.incrementCookies(1);
+            counterLabel.setText(cookieCount.getCookieCount() + " cookies");
+        } else if (action == setMilestoneButton) {
+            setupMilestone();
+        } else if (action == viewMilestoneButton) {
+            showMilestones();
+        } else if (action == setMilestoneTextField) {
+            String amount = setMilestoneTextField.getText();
+            addNewMilestone(amount);
         }
     }
+
 
     // REQUIRES: input must be an integer >=0
     // MODIFIES: this, MilestonesSet
@@ -139,6 +138,7 @@ public class NewCookieApp implements ActionListener {
         setMilestoneFrame.setLayout(null);
         setMilestoneFrame.setSize(400,200);
         setMilestoneFrame.setLayout(new FlowLayout());
+        setMilestoneFrame.setLocationRelativeTo(null);
         setMilestoneFrame.setVisible(true);
 
         JLabel entryText = new JLabel("Set the amount of cookies you wish to receive:");
@@ -149,7 +149,6 @@ public class NewCookieApp implements ActionListener {
 
         setMilestoneTextField = new JTextField("", 5);
         setMilestoneFrame.add(setMilestoneTextField);
-        setMilestoneTextField.setActionCommand("enter");
         setMilestoneTextField.addActionListener(this);
 
     }
@@ -166,6 +165,7 @@ public class NewCookieApp implements ActionListener {
             errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             errorFrame.getContentPane().setBackground(Color.yellow);
             errorFrame.setSize(400, 200);
+            errorFrame.setLocationRelativeTo(null);
             errorFrame.setVisible(true);
 
             JLabel entryText = new JLabel("oh no! Your milestone needs to be an integer.");
@@ -174,6 +174,57 @@ public class NewCookieApp implements ActionListener {
             entryText.setForeground(Color.black);
             errorFrame.add(entryText);
         }
+    }
 
+    // EFFECTS: displays a list of all milestones set by the user
+    public void showMilestones() {
+        JFrame milestonesDisplay = new JFrame("Milestones:");
+        milestonesDisplay.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        milestonesDisplay.getContentPane().setBackground(Color.black);
+        milestonesDisplay.setLayout(null);
+        milestonesDisplay.setSize(400,300);
+        milestonesDisplay.setLocationRelativeTo(null);
+        milestonesDisplay.setVisible(true);
+
+        JTextArea area = new JTextArea();
+        JScrollPane scroll = new JScrollPane(area);
+        area.setEditable(false);
+        scroll.setBounds(0, 0, 400, 300);
+        milestonesDisplay.add(scroll);
+
+        if (milestones.getLength() == 0) {
+            area.setText("You have no milestones set.");
+        } else {
+            milestones.updateMilestonesStatuses(cookieCount.getCookieCount());
+            for (int i = 0; i < milestones.getLength(); i++) {
+                area.append(milestones.milestonesSetDisplay().get(i) + "\n");
+            }
+        }
+    }
+
+    public void saveGame() {
+        try {
+            jsonMilestoneWriter.open();
+            jsonMilestoneWriter.writeMilestonesSet(milestones);
+            jsonMilestoneWriter.close();
+            jsonCookieWriter.open();
+            jsonCookieWriter.writeCookieCount(cookieCount);
+            jsonCookieWriter.close();
+            System.out.println("Saved milestones and total cookies");
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE_MILESTONES);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads MilestonesSet and cookieCount from file
+    public void loadGame() {
+        try {
+            milestones = jsonMilestoneReader.readMilestonesSet();
+            cookieCount = jsonCookieReader.readCookies();
+            counterLabel.setText(cookieCount.getCookieCount() + " cookies");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE_MILESTONES);
+        }
     }
 }
