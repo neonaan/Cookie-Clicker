@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.HashMap;
+
 public class CookieCount implements Writable {
     private int cookies;
 
