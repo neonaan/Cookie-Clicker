@@ -1,8 +1,5 @@
 package ui;
 
-import persistence.JsonReader;
-import persistence.JsonWriter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,15 +7,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+// A new window that appears when the main application is closed
 public class CloseWindowPopup extends WindowAdapter implements ActionListener {
     private JButton noButton;
     private JButton yesButton;
-    private NewCookieApp application;
+    private CookieApp application;
 
-    public CloseWindowPopup(NewCookieApp application) {
+    // EFFECTS: runs the popup application
+    public CloseWindowPopup(CookieApp application) {
         this.application = application;
     }
 
+    // EFFECTS: Creates and displays a new popup window
     public void windowClosing(WindowEvent e) {
         JFrame popUp = new JFrame();
         popUp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,6 +44,8 @@ public class CloseWindowPopup extends WindowAdapter implements ActionListener {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: Makes yes/no buttons for the new window
     private void makeButtons(JFrame popUp) {
         JPanel yesNoButtons = new JPanel();
         yesNoButtons.setBounds(140, 50, 100,50);
@@ -65,6 +67,7 @@ public class CloseWindowPopup extends WindowAdapter implements ActionListener {
         yesNoButtons.add(noButton);
     }
 
+    // EFFECTS: selects a new action based on which button is pressed
     @Override
     public void actionPerformed(ActionEvent e) {
         Object action = e.getSource();
@@ -76,6 +79,5 @@ public class CloseWindowPopup extends WindowAdapter implements ActionListener {
             System.exit(0);
         }
     }
-
 
 }

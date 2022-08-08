@@ -4,19 +4,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 
+// Startup window that appear when the main application is first run
 public class StartGamePopup implements ActionListener {
     private JButton noButton;
     private JButton yesButton;
-    private NewCookieApp application;
+    private CookieApp application;
     private JFrame popup;
 
-    public StartGamePopup(NewCookieApp application) {
+    // EFFECTS: runs the popup application
+    public StartGamePopup(CookieApp application) {
         this.application = application;
         openPopup();
     }
 
+    // EFFECTS: Creates and displays a new popup window
     private void openPopup() {
         popup = new JFrame();
         popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -24,7 +26,6 @@ public class StartGamePopup implements ActionListener {
         popup.setSize(400, 200);
         popup.setLayout(null);
         popup.setLocationRelativeTo(null);
-        popup.setVisible(true);
 
         JPanel textPanel = new JPanel();
         textPanel.setBounds(70, 0, 300, 50);
@@ -39,9 +40,12 @@ public class StartGamePopup implements ActionListener {
         textPanel.add(text);
 
         makeButtons(popup);
+        popup.setVisible(true);
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: Makes yes/no buttons for the new window
     private void makeButtons(JFrame popUp) {
         JPanel yesNoButtons = new JPanel();
         yesNoButtons.setBounds(140, 50, 100,50);
@@ -63,6 +67,7 @@ public class StartGamePopup implements ActionListener {
         yesNoButtons.add(noButton);
     }
 
+    // EFFECTS: selects a new action based on which button is pressed
     @Override
     public void actionPerformed(ActionEvent e) {
         Object action = e.getSource();
@@ -74,4 +79,5 @@ public class StartGamePopup implements ActionListener {
             popup.dispose();
         }
     }
+
 }
