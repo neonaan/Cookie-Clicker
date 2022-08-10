@@ -1,6 +1,7 @@
 package ui;
 
 import model.CookieCount;
+import model.EventLog;
 import model.Milestone;
 import model.MilestonesSet;
 import persistence.JsonReader;
@@ -224,7 +225,6 @@ public class CookieApp implements ActionListener {
             jsonCookieWriter.open();
             jsonCookieWriter.writeCookieCount(cookieCount);
             jsonCookieWriter.close();
-            System.out.println("Saved milestones and total cookies");
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE_MILESTONES);
         }
@@ -237,6 +237,7 @@ public class CookieApp implements ActionListener {
             milestones = jsonMilestoneReader.readMilestonesSet();
             cookieCount = jsonCookieReader.readCookies();
             counterLabel.setText(cookieCount.getCookieCount() + " cookies");
+            EventLog.getInstance().clear();
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE_MILESTONES);
         }

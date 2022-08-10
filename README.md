@@ -32,14 +32,15 @@ I have set have been reached.
 the game where it left off.
 
 ## Phase 3:
-## Instructions for Grader:
+### Instructions for Grader:
 
 - You can generate the first required event by
 clicking on the "set milestone" button. You will then
 be prompted to input an integer to set a new milestone.
 - You can generate the second required event by clicking
 on the "view milestones" button. A new window will appear
-that displays all the milestones that have been set so far.
+that displays all the milestones that have been set so far and
+update their statuses accordingly.
 - You can locate my visual component by noticing the 
 counter at the top left of the screen that keeps track
 of how many cookies have been acquired. Click the big brown 
@@ -50,5 +51,16 @@ of saving the game.
 - You can reload the state of my application when it is first run. 
 A small window will appear that gives the user the option of loading
 the game state from the saved file.
+
+## Phase 4:
+
+### Task 2:
+Here is what should print out in the console 
+after clicking the "view milestones" button twice
+and then setting a new milestone:   
+Event log cleared.    
+Milestones were updated and viewed   
+Milestones were updated and viewed   
+A new milestone was set
 
 

@@ -21,6 +21,7 @@ public class MilestonesSet implements Writable {
     // EFFECTS: Adds a milestone to the end of the list
     public void addMilestone(Milestone milestone) {
         milestones.add(milestone);
+        EventLog.getInstance().logEvent(new Event("A new milestone was set"));
     }
 
     public LinkedList<Milestone> getMilestones() {
@@ -58,6 +59,7 @@ public class MilestonesSet implements Writable {
                 m.setReached();
             }
         }
+        EventLog.getInstance().logEvent(new Event("Milestones were updated and viewed"));
     }
 
     @Override

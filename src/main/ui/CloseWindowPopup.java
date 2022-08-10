@@ -1,11 +1,15 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 // A new window that appears when the main application is closed
 public class CloseWindowPopup extends WindowAdapter implements ActionListener {
@@ -74,9 +78,17 @@ public class CloseWindowPopup extends WindowAdapter implements ActionListener {
 
         if (action == yesButton) {
             application.saveGame();
+            printLog(EventLog.getInstance());
             System.exit(0);
         } else if (action == noButton) {
+            printLog(EventLog.getInstance());
             System.exit(0);
+        }
+    }
+
+    private void printLog(EventLog el) {
+        for (Event event : el) {
+            System.out.println(event.getDescription());
         }
     }
 
