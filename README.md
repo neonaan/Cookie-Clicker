@@ -63,4 +63,12 @@ Milestones were updated and viewed
 Milestones were updated and viewed   
 A new milestone was set
 
+### Task 3:
+If I had more time, some refactoring that I would
+do would be:
+- Reduce duplication of code in the CloseWindowPopup
+and StartGamePopup classes by making an abstract class.
+- Make a new class that deals with displaying milestones
+in the gui to improve cohesion.
+
 
