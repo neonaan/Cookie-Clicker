@@ -1,5 +1,14 @@
 # Cookie Clicker
 
+This is a simplified version of the Cookie Clicker
+video game where you click on a picture of a cookie to acquire
+cookies. In this game, you can set milestones for the 
+amount of cookies you wish to acquire and view them. You
+can also save your game when you wish to quit and load back your progress
+the next time you want to play.
+
+
+# Process:
 ## Phase 0/1:
 
 I want to make a **Cookie Clicker** game. This game
